@@ -2,8 +2,10 @@ import requests
 import os
 from datetime import datetime, timedelta
 
-# 你的 NewsAPI Key，记得替换成你的真实 API key
-NEWSAPI_KEY = "1fb335066c8f4694876780e117cbfe90"
+NEWSAPI_KEY = os.environ.get("NEWSAPI_API_KEY") # 从环境变量中获取
+
+if not NEWSAPI_KEY:
+    raise ValueError("NEWSAPI_API_KEY environment variable not set. Please set it in GitHub Secrets or your local environment.")
 
 # 关键词列表
 # keywords = ["TSLA", "NVDA", "Elon Musk", "Trump"]
@@ -17,8 +19,9 @@ keywords = [
     "SMR",
     "nuclear policy"]
 
+
 # 保存目录和文件名
-SAVE_DIR = r"D:\daily\msg"
+SAVE_DIR = "output"
 os.makedirs(SAVE_DIR, exist_ok=True)
 HTML_PATH = os.path.join(SAVE_DIR, "news_summary.html")
 
