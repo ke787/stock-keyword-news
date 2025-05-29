@@ -1,0 +1,39 @@
+name: Daily News Scraper # 工作流的名称，会在GitHub Actions页面显示
+
+on:
+  schedule:
+    # 定时任务：每天世界标准时间 (UTC) 00:00 运行
+    # 你可以根据需要调整这个 cron 表达式。
+    # 比如：'0 8 * * *' 表示每天 UTC 时间早上 8:00 运行
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许你手动触发这个工作流运行
+
+jobs:
+  scrape_news: # 定义一个名为 'scrape_news' 的作业
+    runs-on: ubuntu-latest # 指定运行环境为最新的 Ubuntu Linux 系统
+
+    steps: # 作业中要执行的步骤
+    - name: Checkout repository # 步骤名称：检出仓库代码
+      uses: actions/checkout@v4 # 使用官方 action 检出你的代码
+
+    - name: Set up Python # 步骤名称：设置 Python 环境
+      uses: actions/setup-python@v5 # 使用官方 action 设置 Python
+      with:
+        python-version: '3.9' # 指定使用的 Python 版本，你可以改为 '3.11' 等
+
+    - name: Install dependencies # 步骤名称：安装依赖
+      run: | # 运行多行命令
+        python -m pip install --upgrade pip # 升级 pip
+        pip install requests # 安装你的 Python 脚本依赖的 requests 库
+
+    - name: Run news scraper # 步骤名称：运行新闻抓取脚本
+      env: # 设置环境变量
+        # NEWSAPI_KEY 环境变量的值来自你在 GitHub Secrets 中设置的同名密钥
+        NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+      run: python news_summary.py # 运行 Python 脚本
+
+    - name: Upload news summary HTML # 步骤名称：上传新闻总结HTML文件
+      uses: actions/upload-artifact@v4 # 使用官方 action 上传生成的文件
+      with:
+        name: news-summary-html # 定义上传文件的名称
+        path: output/news_summary.html # 定义要上传的文件路径（你的HTML文件）
