@@ -28,7 +28,7 @@ jobs:
         python-version: '3.9' # 指定使用的 Python 版本，你可以改为 '3.11' 等
 
     - name: Install dependencies # 步骤名称：安装依赖
-      run: | # 运行多行命令
+      run: | # 读取requirements.txt运行多行命令
         python -m pip install --upgrade pip 
         pip install -r requirements.txt
 
