@@ -45,5 +45,6 @@ jobs:
 
         cp output/news_summary.html ./       # 复制到根目录
         git add news_summary.html            # 添加根目录的文件
+        
         git commit -m "Daily update: $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "Nothing to commit"
         git push origin main
