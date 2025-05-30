@@ -11,8 +11,10 @@ if not NEWSAPI_KEY:
 # 读取 config.yaml
 with open("config.yaml", "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
+
 # 关键词
 KEYWORDS = config.get("keywords", [])
+
 # 添加过滤：排除低质量来源（比如 Yahoo Entertainment）
 LOW_QUALITY_SOURCES = config.get("low_quality_sources", [])
 
