@@ -30,7 +30,7 @@ jobs:
     - name: Install dependencies # 步骤名称：安装依赖
       run: | # 运行多行命令
         python -m pip install --upgrade pip 
-        pip install requests 
+        pip install -r requirements.txt
 
     - name: Run news scraper # 步骤名称：运行新闻抓取脚本
       env: # 设置环境变量

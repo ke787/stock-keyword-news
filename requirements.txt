@@ -1,1 +1,6 @@
 requests~=2.32.3
+pyyaml
+beautifulsoup4
+html5lib
+jinja2
+pandas
