@@ -1,5 +1,6 @@
 import requests
 import os
+import yaml
 from datetime import datetime, timedelta
 
 NEWSAPI_KEY = os.environ.get("NEWSAPI_KEY") # 从环境变量中获取
@@ -7,18 +8,13 @@ NEWSAPI_KEY = os.environ.get("NEWSAPI_KEY") # 从环境变量中获取
 if not NEWSAPI_KEY:
     raise ValueError("NEWSAPI_KEY environment variable not set. Please set it in GitHub Secrets or your local environment.")
 
-# 关键词列表
-# keywords = ["TSLA", "NVDA", "Elon Musk", "Trump"]
-keywords = [
-    "TSLA",
-    "NVDA",
-    "Elon Musk",
-    "Trump",
-    "nuclear power",
-    "nuclear energy",
-    "SMR",
-    "nuclear policy"]
-
+# 读取 config.yaml
+with open("config.yaml", "r", encoding="utf-8") as f:
+    config = yaml.safe_load(f)
+# 关键词
+KEYWORDS = config.get("keywords", [])
+# 添加过滤：排除低质量来源（比如 Yahoo Entertainment）
+LOW_QUALITY_SOURCES = config.get("low_quality_sources", [])
 
 # 保存目录和文件名
 SAVE_DIR = "output"
@@ -27,9 +23,6 @@ HTML_PATH = os.path.join(SAVE_DIR, "news_summary.html")
 
 # NewsAPI 网址和参数模板
 NEWSAPI_URL = "https://newsapi.org/v2/everything"
-
-# 添加过滤：排除低质量来源（比如 Yahoo Entertainment）
-LOW_QUALITY_SOURCES = ["Yahoo Entertainment", "TMZ", "Hollywood Reporter"]
 
 # 获取最近3天新闻（防止没新闻，时间段稍微长点）
 to_date = datetime.utcnow()
