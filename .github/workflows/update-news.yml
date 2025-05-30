@@ -15,6 +15,9 @@ jobs:
     steps: # 作业中要执行的步骤
     - name: Checkout repository # 步骤名称：检出仓库代码
       uses: actions/checkout@v4 # 使用官方 action 检出你的代码
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0  # 必须设置，才能切换分支
 
     - name: Set up Python # 步骤名称：设置 Python 环境
       uses: actions/setup-python@v5 # 使用官方 action 设置 Python
@@ -32,8 +35,16 @@ jobs:
         NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
       run: python news_summary.py # 运行我的 Python 脚本
 
-    - name: Upload news summary HTML # 步骤名称：上传新闻总结HTML文件
-      uses: actions/upload-artifact@v4 # 使用官方 action 上传生成的文件
-      with:
-        name: news-summary-html # 定义上传文件的名称
-        path: output/news_summary.html # 定义要上传的文件路径（你的HTML文件）
+    - name: Commit and push to output branch
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        git switch --force-create output || git switch output
+
+        mkdir -p output
+        cp output/news_summary.html ./  # 或直接 cp 到根目录
+
+        git add news_summary.html
+        git commit -m "Daily update: $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "Nothing to commit"
+        git push origin output
