@@ -8,6 +8,9 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch: # 允许你手动触发这个工作流运行
 
+permissions:
+  contents: write
+
 jobs:
   scrape_news: # 定义一个名为 'scrape_news' 的作业
     runs-on: ubuntu-latest # 指定运行环境为最新的 Ubuntu Linux 系统
@@ -35,16 +38,11 @@ jobs:
         NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
       run: python news_summary.py # 运行我的 Python 脚本
 
-    - name: Commit and push to output branch
+    - name: Commit and push news summary
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-        git switch --force-create output || git switch output
-
-        mkdir -p output
-        cp output/news_summary.html ./  # 或直接 cp 到根目录
-
-        git add news_summary.html
+        git add output/news_summary.html
         git commit -m "Daily update: $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "Nothing to commit"
-        git push origin output
+        git push origin main
