@@ -2,10 +2,10 @@ import requests
 import os
 from datetime import datetime, timedelta
 
-NEWSAPI_KEY = os.environ.get("NEWSAPI_API_KEY") # 从环境变量中获取
+NEWSAPI_KEY = os.environ.get("NEWSAPI_KEY") # 从环境变量中获取
 
 if not NEWSAPI_KEY:
-    raise ValueError("NEWSAPI_API_KEY environment variable not set. Please set it in GitHub Secrets or your local environment.")
+    raise ValueError("NEWSAPI_KEY environment variable not set. Please set it in GitHub Secrets or your local environment.")
 
 # 关键词列表
 # keywords = ["TSLA", "NVDA", "Elon Musk", "Trump"]
