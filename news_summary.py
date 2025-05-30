@@ -68,7 +68,7 @@ def main():
     print("开始抓取新闻...")
     html_body = f"<h1>新闻总结 ({datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')})</h1>\n"
 
-    for kw in keywords:
+    for kw in KEYWORDS:
         articles = fetch_news(kw)
         section_html = build_html_section(kw, articles)
         html_body += section_html + "\n"
