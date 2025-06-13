@@ -9,7 +9,7 @@ if not NEWSAPI_KEY:
     raise ValueError("NEWSAPI_KEY environment variable not set. Please set it in GitHub Secrets or your local environment.")
 
 # 读取 config.yaml
-with open("config.yaml", "r", encoding="utf-8") as f:
+with open("config2.yaml", "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 
 # 关键词
@@ -21,7 +21,7 @@ LOW_QUALITY_SOURCES = config.get("low_quality_sources", [])
 # 保存目录和文件名
 SAVE_DIR = "output"
 os.makedirs(SAVE_DIR, exist_ok=True)
-HTML_PATH = os.path.join(SAVE_DIR, "news_summary.html")
+HTML_PATH = os.path.join(SAVE_DIR, "news_summary2.html")
 
 # NewsAPI 网址和参数模板
 NEWSAPI_URL = "https://newsapi.org/v2/everything"
